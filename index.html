@@ -9,7 +9,7 @@
   <body>
     <div class="user-info">
       <div class="user-info__inner">
-        <div class="user-info__content">
+        <div class="user-info__content js--content">
           <div class="user-info__content-item">Id</div>
           <div class="user-info__content-item">Name</div>
           <div class="user-info__content-item">Phone</div>
@@ -18,13 +18,16 @@
         </div>
         <button type="button"  class="user-info__button js--add-form">Add User</button>
         <form id="user-info-inner-form" class="user-info__form js--form" clasaction="#">
-          <input type="text" name="user-name " id ="user-info-inner-name" placeholder="Name">
-          <input type="text" name ="user-phone" id ="user-info-inner-phone" placeholder="Phone">
-          <input type="text" name="user-age" id ="user-info-inner-phone" placeholder="Age">
+          <input type="text" name="user-name " id ="user-info-inner-name" class="js--name" placeholder="Name">
+          <input type="text" name ="user-phone" id ="user-info-inner-phone" class="js--phone" placeholder="Phone">
+          <input type="text" name="user-age" id ="user-info-inner-phone" class="js--age" placeholder="Age">
           <button type="submit" class="js--add-info">Add Information</button>
         </form>
       </div>
     </div>
     <script type="module" src="/main.js"></script>
+    <div>1
+      <div>2</div>
+    </div>
   </body>
 </html>
