@@ -8,9 +8,9 @@ function GetUserInfo({
   addInfo,
   inputName,
   inputPhone,
-  inputAge, 
+  inputAge,
+  pre,
 }) {
-
   const addBtnForm = document.querySelector(addForm);
   const formUser = document.querySelector(userForm);
   const addBtnInfo = document.querySelector(addInfo);
@@ -18,54 +18,33 @@ function GetUserInfo({
   const phoneInput = document.querySelector(inputPhone);
   const ageInput = document.querySelector(inputAge);
   const contentUser = document.querySelector(userContent);
-  
-  
- 
-  function resetInput() {
-    nameInput.value = "";
-    phoneInput.value = "";
-    ageInput.value = "";
-  }
+  const preEl = document.querySelector(pre);
+  let currentItems = JSON.parse(localStorage.getItem("dataUsers")) || [];
+
   formUser.addEventListener("submit", (event) => {
     event.preventDefault();
   });
+
   this.openForm = function () {
     formUser.classList.add("open-form");
   };
-  addBtnForm.addEventListener("click", this.openForm);
+
   this.infoAdd = () => {
     formUser.classList.remove("open-form");
-    const getRandomId = Math.floor(Math.random() * 100)
-   
-
-    const localUserData =[]
+    const getRandomId = Math.floor(Math.random() * 100);
     const userData = {
       userName: nameInput.value,
       userPhone: phoneInput.value,
       userAge: ageInput.value,
       userId: getRandomId,
-    }
-    localUserData.push(userData)
-    console.log(userData)
-    localStorage.setItem("dataUsers", JSON.stringify(userData))
-    
-    this.createTemplate({
-      nameDescription: nameInput.value,
-      phoneDescription: phoneInput.value,
-      ageDescription: ageInput.value,
-      idDescription: getRandomId,
-    });
-
-    resetInput();
+    };
+    currentItems.push(userData);
+    localStorage.setItem("dataUsers", JSON.stringify(currentItems));
+    this.createTemplate(userData);
+    formUser.reset();
   };
-  addBtnInfo.addEventListener("click", this.infoAdd);
 
-  this.createTemplate = function ({
-    idDescription,
-    nameDescription,
-    phoneDescription,
-    ageDescription,
-  }) {
+  this.createTemplate = function ({ userId, userName, userPhone, userAge }) {
     const divItemsInfo = document.createElement("div");
     const divItemId = document.createElement("div");
     const divItemName = document.createElement("div");
@@ -75,11 +54,10 @@ function GetUserInfo({
     const divButtonDelete = document.createElement("button");
     const divButtonView = document.createElement("button");
 
-
-    divItemId.innerText = idDescription;
-    divItemName.innerText = nameDescription;
-    divItemPhone.innerText = phoneDescription;
-    divItemAge.innerText = ageDescription;
+    divItemId.innerText = userId;
+    divItemName.innerText = userName;
+    divItemPhone.innerText = userPhone;
+    divItemAge.innerText = userAge;
 
     divItemsInfo.appendChild(divItemId).classList.add("flex-item-content");
     divItemsInfo.appendChild(divItemName).classList.add("flex-item-content");
@@ -95,13 +73,24 @@ function GetUserInfo({
     contentUser.after(divItemsInfo);
 
     divButtonDelete.addEventListener("click", () => {
-      divItemsInfo.remove()
-    })
+      divItemsInfo.remove();
+      currentItems = currentItems.filter((item) => item.userId !== userId);
+      localStorage.setItem("dataUsers", JSON.stringify(currentItems));
+    });
 
-   
-
-    return divItemsInfo;
+    divButtonView.addEventListener("click", () => {
+      preEl.innerText = JSON.stringify({
+        userId,
+        userAge,
+        userPhone,
+        userName,
+      });
+    });
   };
+
+  currentItems.forEach(this.createTemplate);
+  addBtnInfo.addEventListener("click", this.infoAdd);
+  addBtnForm.addEventListener("click", this.openForm);
 }
 
 const userInfo = new GetUserInfo({
@@ -112,5 +101,5 @@ const userInfo = new GetUserInfo({
   inputPhone: ".js--phone",
   inputAge: ".js--age",
   userContent: ".js--content",
-}
-);
+  pre: ".js--pre",
+});
