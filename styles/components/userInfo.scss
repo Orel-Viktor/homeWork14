@@ -57,3 +57,8 @@
 .flex-item-content:last-child{
     border: none;
 }
+
+.flex-action-content {
+    display: flex;
+    justify-content: space-around;
+}
